@@ -6,7 +6,7 @@
 @media (min-width: 880px) {
     .header__logo {
         padding-left: 0;
-        max-height: 33px;
+        min-height: 33px;
     }
 
 }
