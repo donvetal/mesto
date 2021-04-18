@@ -1,0 +1,13 @@
+@import url(../vendor/normalize.css);
+/*-------------------Шрифты--------------------------*/
+@import url(../vendor/fonts/fonts.css);
+@import url(../blocks/page/page.css);
+/*--------------Микс для центрирования---------------*/
+@import url(../blocks/page/__container/page__container.css);
+/* -------------------Header ------------------------*/
+@import url(../blocks/header/header.css);
+@import url(../blocks/header/__logo/header__logo.css);
+
+/*--------------------Footer-------------------------*/
+@import url(../blocks/footer/footer.css);
+@import url(../blocks/footer/__copyright/footer__copyright.css);
