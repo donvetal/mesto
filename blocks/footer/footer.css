@@ -10,19 +10,10 @@
 @media (min-width: 880px) {
     .footer {
         max-height: 18px;
-        padding-left: 0;
-        padding-right: 0;
-
-    }
-
-}
-
-@media (min-width: 1280px) {
-    .footer {
-
         padding-top: 66px;
         padding-bottom: 60px;
 
     }
 
 }
+

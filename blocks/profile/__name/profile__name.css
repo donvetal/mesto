@@ -1,0 +1,13 @@
+.profile__name {
+    font-size: 27px;
+    font-weight: 500;
+    padding: 0;
+    margin: 0;
+}
+
+@media (min-width: 1024px) {
+    .profile__name {
+        font-size: 42px;
+    }
+
+}

@@ -1,0 +1,17 @@
+.profile__button {
+    padding-left: 10px;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.5s linear;
+}
+
+.profile__button:hover {
+    opacity: 0.6;
+}
+
+@media (min-width: 720px) {
+    .profile__button {
+        padding-left: 18px;
+    }
+
+}
