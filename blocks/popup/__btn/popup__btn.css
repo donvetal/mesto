@@ -21,5 +21,6 @@
     .popup__btn {
         font-size: 18px;
         margin-top: 48px;
+        min-height: 50px;
     }
 }

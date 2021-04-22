@@ -26,23 +26,12 @@ closedPopupButton.addEventListener('click', togglePopup);
 function formSubmitHandler(evt) {
     evt.preventDefault();
     popup.classList.toggle('popup_opened');
-    let name = nameInput.value;
-    let job = jobInput.value;
-    profileTitle.textContent = name;
-    profileDescription.textContent = job;
+    profileTitle.textContent = nameInput.value;
+    profileDescription.textContent = jobInput.value;
 
 }
 
 formElement.addEventListener('submit', formSubmitHandler);
 
-document.onkeydown = function (evt) {
-    switch (evt.code) {
-        case 'Enter':
-            formSubmitHandler(evt);
-            break;
-        default:
-            break;
-    }
-};
 
 
