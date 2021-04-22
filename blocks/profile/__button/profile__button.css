@@ -1,13 +1,17 @@
 .profile__button {
     display: flex;
-    align-self: end;
-    text-decoration: none;
-    color: inherit;
+    align-self: start;
     transition: opacity 0.5s linear;
-    max-width: 18px;
+    min-width: 18px;
+    min-height: 18px;
     margin: 8px 0 0 10px;
     padding: 0;
     cursor: pointer;
+    background-image: url("../../../images/profile-button.svg");
+    background-color: #000000;
+    background-size: contain;
+    border-style: none;
+    background-repeat: no-repeat;
 }
 
 .profile__button:hover {
@@ -19,6 +23,7 @@
         margin-left: 18px;
         min-width: 24px;
         margin-top: 15px;
+        min-height: 24px;
     }
 
 }

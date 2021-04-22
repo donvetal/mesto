@@ -1,4 +1,4 @@
-.popup__name {
+.popup__input {
     margin: 0;
     padding: 0;
     width: 100%;
@@ -13,6 +13,8 @@
     border-right-style: none;
     white-space: nowrap;
     overflow: hidden;
+}
 
-
+.popup__input:nth-of-type(2) {
+    margin: 30px 0 0;
 }
