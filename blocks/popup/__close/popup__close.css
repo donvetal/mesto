@@ -9,7 +9,7 @@
     cursor: pointer;
     transition: opacity 0.5s linear;
     background-image: url("../../../images/close-icon.svg");
-    background-color: #000000;
+    background-color: transparent;
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
