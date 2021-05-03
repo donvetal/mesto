@@ -1,39 +1,144 @@
 const openPopupButton = document.querySelector('.profile__button');
-const popup = document.querySelector('.popup');
+const popupProfile = document.querySelector('.popup_type_profile');
 
-const closedPopupButton = document.querySelector('.popup__close');
+const closedPopupButton = document.querySelector('.popup__close_type_profile');
 
-let formElement = document.querySelector('.popup__form');
-let nameInput = formElement.querySelector('.popup__input_type_name');
-let jobInput = formElement.querySelector('.popup__input_type_job');
+let formElementProfile = document.querySelector('.popup__form_type_profile');
+let nameInput = formElementProfile.querySelector('.popup__input_type_name');
+let jobInput = formElementProfile.querySelector('.popup__input_type_job');
 
 const profileTitle = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 
-function openPopup() {
-    popup.classList.add('popup_opened');
+function openPopupProfile() {
+    popupProfile.classList.add('popup_opened');
     nameInput.value = profileTitle.textContent;
     jobInput.value = profileDescription.textContent;
 }
 
-function closePopup() {
-    popup.classList.remove('popup_opened');
+function closePopupProfile() {
+    popupProfile.classList.remove('popup_opened');
 }
 
-openPopupButton.addEventListener('click', openPopup);
+openPopupButton.addEventListener('click', openPopupProfile);
 
-closedPopupButton.addEventListener('click', closePopup);
+closedPopupButton.addEventListener('click', closePopupProfile);
 
 
-function formSubmitHandler(evt) {
+function formSubmitHandlerProfile(evt) {
     evt.preventDefault();
-    closePopup();
+    closePopupProfile();
     profileTitle.textContent = nameInput.value;
     profileDescription.textContent = jobInput.value;
 
 }
 
-formElement.addEventListener('submit', formSubmitHandler);
+formElementProfile.addEventListener('submit', formSubmitHandlerProfile);
+
+
+// 5 sprint
+const openPopupMestoButton = document.querySelector('.profile__add-button');
+const popupMesto = document.querySelector('.popup_type_mesto');
+
+const closedPopupMestoButton = document.querySelector('.popup__close_type_mesto');
+
+function openPopupMesto() {
+    popupMesto.classList.add('popup_opened');
+
+}
+
+function closePopupMesto() {
+    popupMesto.classList.remove('popup_opened');
+}
+
+openPopupMestoButton.addEventListener('click', openPopupMesto);
+
+closedPopupMestoButton.addEventListener('click', closePopupMesto);
+
+let formElementMesto = document.querySelector('.popup__form_type_mesto');
+let nameInputMesto = formElementMesto.querySelector('.popup__input_type_mesto-name');
+let imageInputMesto = formElementMesto.querySelector('.popup__input_type_mesto-image-link');
+
+
+const mestoContainer = document.querySelector('.elements-cards');
+const mestoTemplate = document.querySelector('.mesto-template');
+
+const initialCards = [
+    {
+        name: 'Архыз',
+        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+    },
+    {
+        name: 'Челябинская область',
+        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+    },
+    {
+        name: 'Иваново',
+        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+    },
+    {
+        name: 'Камчатка',
+        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+    },
+    {
+        name: 'Холмогорский район',
+        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+    },
+    {
+        name: 'Байкал',
+        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+    }
+];
+
+
+function createMesto(nameMesto, imageMesto) {
+    function handleRemoveMesto(e) {
+        e.target.closest('.card').remove();
+    }
+
+    const newMesto = mestoTemplate.content.querySelector('.card').cloneNode(true);
+    const mestoName = newMesto.querySelector('.card__name');
+    const mestoImage = newMesto.querySelector('.card__image');
+    const mestoRemoveButton = newMesto.querySelector('.card__trash');
+    const cardLikeButton = newMesto.querySelector('.card__like');
+    cardLikeButton.addEventListener('click', function(evt) {
+        if(evt.target.classList.contains('card__like_disabled')) {
+            evt.target.classList.remove('card__like_disabled')
+            evt.target.classList.add('card__like_active')
+        } else {
+            evt.target.classList.remove('card__like_active')
+            evt.target.classList.add('card__like_disabled')
+        }
+
+    });
+
+    mestoName.textContent = nameMesto;
+    mestoImage.src = imageMesto;
+
+
+    mestoRemoveButton.addEventListener('click', handleRemoveMesto);
+    return newMesto;
+}
+
+
+initialCards.forEach(function (element) {
+    const newCard = createMesto(element.name, element.link);
+    mestoContainer.prepend(newCard);
+
+});
+
+
+function formSubmitHandlerMesto(evt) {
+    evt.preventDefault();
+    closePopupMesto();
+    const nameValue = nameInputMesto.value;
+    const imageValue = imageInputMesto.value;
+
+    mestoContainer.prepend(createMesto(nameValue, imageValue));
+}
+
+formElementMesto.addEventListener('submit', formSubmitHandlerMesto);
+
 
 
 
