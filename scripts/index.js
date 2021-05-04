@@ -36,7 +36,7 @@ function formSubmitHandlerProfile(evt) {
 formElementProfile.addEventListener('submit', formSubmitHandlerProfile);
 
 
-// 5 sprint
+//------------------------------- Popup Mesto----------------------------------//
 const openPopupMestoButton = document.querySelector('.profile__add-button');
 const popupMesto = document.querySelector('.popup_type_mesto');
 
@@ -44,7 +44,8 @@ const closedPopupMestoButton = document.querySelector('.popup__close_type_mesto'
 
 function openPopupMesto() {
     popupMesto.classList.add('popup_opened');
-
+    nameInputMesto.value = '';
+    imageInputMesto.value = '';
 }
 
 function closePopupMesto() {
@@ -96,18 +97,48 @@ function createMesto(nameMesto, imageMesto) {
         e.target.closest('.card').remove();
     }
 
+
     const newMesto = mestoTemplate.content.querySelector('.card').cloneNode(true);
     const mestoName = newMesto.querySelector('.card__name');
     const mestoImage = newMesto.querySelector('.card__image');
     const mestoRemoveButton = newMesto.querySelector('.card__trash');
     const cardLikeButton = newMesto.querySelector('.card__like');
-    cardLikeButton.addEventListener('click', function(evt) {
-        if(evt.target.classList.contains('card__like_disabled')) {
-            evt.target.classList.remove('card__like_disabled')
-            evt.target.classList.add('card__like_active')
+
+
+    //--------------------------------------Foto popup------------------------------------------//
+    const popupMestoImage = document.querySelector('.popup_type_image');
+
+
+    const closedPopupImageButton = document.querySelector('.popup__close_type_image');
+    const imagePopupName = document.querySelector('.popup__description');
+    const imagePopupFoto = document.querySelector('.popup__image');
+
+
+    function openPopupImage() {
+        popupMestoImage.classList.add('popup_opened');
+        imagePopupName.textContent = mestoName.textContent;
+        imagePopupFoto.src = mestoImage.src;
+
+
+    }
+
+    function closePopupImage() {
+        popupMestoImage.classList.remove('popup_opened');
+    }
+
+    mestoImage.addEventListener('click', openPopupImage);
+
+    closedPopupImageButton.addEventListener('click', closePopupImage);
+    //---------------------------------------------------------------------------//
+
+
+    cardLikeButton.addEventListener('click', function (evt) {
+        if (evt.target.classList.contains('card__like_disabled')) {
+            evt.target.classList.remove('card__like_disabled');
+            evt.target.classList.add('card__like_active');
         } else {
-            evt.target.classList.remove('card__like_active')
-            evt.target.classList.add('card__like_disabled')
+            evt.target.classList.remove('card__like_active');
+            evt.target.classList.add('card__like_disabled');
         }
 
     });
@@ -117,15 +148,10 @@ function createMesto(nameMesto, imageMesto) {
 
 
     mestoRemoveButton.addEventListener('click', handleRemoveMesto);
+
+
     return newMesto;
 }
-
-
-initialCards.forEach(function (element) {
-    const newCard = createMesto(element.name, element.link);
-    mestoContainer.prepend(newCard);
-
-});
 
 
 function formSubmitHandlerMesto(evt) {
@@ -135,9 +161,26 @@ function formSubmitHandlerMesto(evt) {
     const imageValue = imageInputMesto.value;
 
     mestoContainer.prepend(createMesto(nameValue, imageValue));
+
+
 }
 
 formElementMesto.addEventListener('submit', formSubmitHandlerMesto);
+initialCards.forEach(function (element) {
+    const newCard = createMesto(element.name, element.link);
+    mestoContainer.prepend(newCard);
+
+
+});
+
+
+
+
+
+
+
+
+
 
 
 
