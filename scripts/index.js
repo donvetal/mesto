@@ -1,7 +1,7 @@
-const openPopupButton = document.querySelector('.profile__button');
+const popupOpenButton = document.querySelector('.profile__button');
 const popupProfile = document.querySelector('.popup_type_profile');
 
-const closedPopupButton = document.querySelector('.popup__close_type_profile');
+const popupCloseButton = document.querySelector('.popup__close_type_profile');
 
 let formElementProfile = document.querySelector('.popup__form_type_profile');
 let nameInput = formElementProfile.querySelector('.popup__input_type_name');
@@ -10,19 +10,28 @@ let jobInput = formElementProfile.querySelector('.popup__input_type_job');
 const profileTitle = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 
+function openPopup(popup) {
+    popup.classList.add('popup_opened'); //добавляем к popup класс popup_opened
+}
+
+function closePopup(popup) {
+    popup.classList.remove('popup_opened'); //удаляем у popup класс popup_opened
+}
+
 function openPopupProfile() {
-    popupProfile.classList.add('popup_opened');
+    openPopup(popupProfile);
     nameInput.value = profileTitle.textContent;
     jobInput.value = profileDescription.textContent;
 }
 
+
 function closePopupProfile() {
-    popupProfile.classList.remove('popup_opened');
+    closePopup(popupProfile);
 }
 
-openPopupButton.addEventListener('click', openPopupProfile);
+popupOpenButton.addEventListener('click', openPopupProfile);
 
-closedPopupButton.addEventListener('click', closePopupProfile);
+popupCloseButton.addEventListener('click', closePopupProfile);
 
 
 function formSubmitHandlerProfile(evt) {
@@ -37,24 +46,24 @@ formElementProfile.addEventListener('submit', formSubmitHandlerProfile);
 
 
 //------------------------------- Popup Mesto----------------------------------//
-const openPopupMestoButton = document.querySelector('.profile__add-button');
+const popupOpenMestoButton = document.querySelector('.profile__add-button');
 const popupMesto = document.querySelector('.popup_type_mesto');
 
-const closedPopupMestoButton = document.querySelector('.popup__close_type_mesto');
+const popupCloseMestoButton = document.querySelector('.popup__close_type_mesto');
 
-function openPopupMesto() {
-    popupMesto.classList.add('popup_opened');
-    nameInputMesto.value = '';
-    imageInputMesto.value = '';
+function handleOpenPopupMesto() {
+    openPopup(popupMesto);
+    nameInputMesto.value.remove();
+    imageInputMesto.value.remove();
 }
 
-function closePopupMesto() {
-    popupMesto.classList.remove('popup_opened');
+function hendleClosePopupMesto() {
+    closePopup(popupMesto);
 }
 
-openPopupMestoButton.addEventListener('click', openPopupMesto);
+popupOpenMestoButton.addEventListener('click', handleOpenPopupMesto);
 
-closedPopupMestoButton.addEventListener('click', closePopupMesto);
+popupCloseMestoButton.addEventListener('click', hendleClosePopupMesto);
 
 let formElementMesto = document.querySelector('.popup__form_type_mesto');
 let nameInputMesto = formElementMesto.querySelector('.popup__input_type_mesto-name');
@@ -64,35 +73,8 @@ let imageInputMesto = formElementMesto.querySelector('.popup__input_type_mesto-i
 const mestoContainer = document.querySelector('.elements-cards');
 const mestoTemplate = document.querySelector('.mesto-template');
 
-const initialCards = [
-    {
-        name: 'Архыз',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-    },
-    {
-        name: 'Челябинская область',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-    },
-    {
-        name: 'Иваново',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-    },
-    {
-        name: 'Камчатка',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-    },
-    {
-        name: 'Холмогорский район',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-    },
-    {
-        name: 'Байкал',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-    }
-];
 
-
-function createMesto(nameMesto, imageMesto) {
+function createMesto({nameMesto, imageMesto}) {
     function handleRemoveMesto(e) {
         e.target.closest('.card').remove();
     }
@@ -109,13 +91,13 @@ function createMesto(nameMesto, imageMesto) {
     const popupMestoImage = document.querySelector('.popup_type_image');
 
 
-    const closedPopupImageButton = document.querySelector('.popup__close_type_image');
+    const popupCloseImageButton = document.querySelector('.popup__close_type_image');
     const imagePopupName = document.querySelector('.popup__description');
     const imagePopupFoto = document.querySelector('.popup__image');
 
 
     function openPopupImage() {
-        popupMestoImage.classList.add('popup_opened');
+        openPopup(popupMestoImage);
         imagePopupName.textContent = mestoName.textContent;
         imagePopupFoto.src = mestoImage.src;
 
@@ -123,12 +105,12 @@ function createMesto(nameMesto, imageMesto) {
     }
 
     function closePopupImage() {
-        popupMestoImage.classList.remove('popup_opened');
+        closePopup(popupMestoImage);
     }
 
     mestoImage.addEventListener('click', openPopupImage);
 
-    closedPopupImageButton.addEventListener('click', closePopupImage);
+    popupCloseImageButton.addEventListener('click', closePopupImage);
     //---------------------------------------------------------------------------//
 
 
@@ -143,8 +125,10 @@ function createMesto(nameMesto, imageMesto) {
 
     });
 
+
     mestoName.textContent = nameMesto;
     mestoImage.src = imageMesto;
+    mestoImage.alt = 'фото ' + mestoName.textContent;
 
 
     mestoRemoveButton.addEventListener('click', handleRemoveMesto);
@@ -154,21 +138,21 @@ function createMesto(nameMesto, imageMesto) {
 }
 
 
-function formSubmitHandlerMesto(evt) {
+function handleFormSubmitMesto(evt) {
     evt.preventDefault();
-    closePopupMesto();
+    hendleClosePopupMesto();
     const nameValue = nameInputMesto.value;
     const imageValue = imageInputMesto.value;
 
-    mestoContainer.prepend(createMesto(nameValue, imageValue));
+    mestoContainer.prepend(createMesto({nameMesto: nameValue, imageMesto: imageValue}));
 
 
 }
 
-formElementMesto.addEventListener('submit', formSubmitHandlerMesto);
+formElementMesto.addEventListener('submit', handleFormSubmitMesto);
 initialCards.forEach(function (element) {
-    const newCard = createMesto(element.name, element.link);
-    mestoContainer.prepend(newCard);
+    const newCard = createMesto({nameMesto: element.name, imageMesto: element.link});
+    mestoContainer.append(newCard);
 
 
 });
