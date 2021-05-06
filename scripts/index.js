@@ -3,9 +3,9 @@ const popupProfile = document.querySelector('.popup_type_profile');
 
 const popupCloseButton = document.querySelector('.popup__close_type_profile');
 
-let formElementProfile = document.querySelector('.popup__form_type_profile');
-let nameInput = formElementProfile.querySelector('.popup__input_type_name');
-let jobInput = formElementProfile.querySelector('.popup__input_type_job');
+const formElementProfile = document.querySelector('.popup__form_type_profile');
+const nameInput = formElementProfile.querySelector('.popup__input_type_name');
+const jobInput = formElementProfile.querySelector('.popup__input_type_job');
 
 const profileTitle = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
@@ -53,21 +53,21 @@ const popupCloseMestoButton = document.querySelector('.popup__close_type_mesto')
 
 function handleOpenPopupMesto() {
     openPopup(popupMesto);
-    nameInputMesto.value.remove();
-    imageInputMesto.value.remove();
 }
 
 function hendleClosePopupMesto() {
     closePopup(popupMesto);
+
 }
 
 popupOpenMestoButton.addEventListener('click', handleOpenPopupMesto);
 
 popupCloseMestoButton.addEventListener('click', hendleClosePopupMesto);
 
-let formElementMesto = document.querySelector('.popup__form_type_mesto');
-let nameInputMesto = formElementMesto.querySelector('.popup__input_type_mesto-name');
-let imageInputMesto = formElementMesto.querySelector('.popup__input_type_mesto-image-link');
+
+const formElementMesto = document.querySelector('.popup__form_type_mesto');
+const nameInputMesto = formElementMesto.querySelector('.popup__input_type_mesto-name');
+const imageInputMesto = formElementMesto.querySelector('.popup__input_type_mesto-image-link');
 
 
 const mestoContainer = document.querySelector('.elements-cards');
@@ -106,7 +106,10 @@ function createMesto({nameMesto, imageMesto}) {
 
     function closePopupImage() {
         closePopup(popupMestoImage);
+
     }
+
+    formElementMesto.reset();
 
     mestoImage.addEventListener('click', openPopupImage);
 
@@ -115,12 +118,10 @@ function createMesto({nameMesto, imageMesto}) {
 
 
     cardLikeButton.addEventListener('click', function (evt) {
-        if (evt.target.classList.contains('card__like_disabled')) {
-            evt.target.classList.remove('card__like_disabled');
-            evt.target.classList.add('card__like_active');
-        } else {
+        if (evt.target.classList.contains('card__like_active')) {
             evt.target.classList.remove('card__like_active');
-            evt.target.classList.add('card__like_disabled');
+        } else {
+            evt.target.classList.add('card__like_active');
         }
 
     });
@@ -143,17 +144,16 @@ function handleFormSubmitMesto(evt) {
     hendleClosePopupMesto();
     const nameValue = nameInputMesto.value;
     const imageValue = imageInputMesto.value;
-
     mestoContainer.prepend(createMesto({nameMesto: nameValue, imageMesto: imageValue}));
 
 
 }
 
+
 formElementMesto.addEventListener('submit', handleFormSubmitMesto);
 initialCards.forEach(function (element) {
     const newCard = createMesto({nameMesto: element.name, imageMesto: element.link});
     mestoContainer.append(newCard);
-
 
 });
 
