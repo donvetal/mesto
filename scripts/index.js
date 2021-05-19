@@ -12,7 +12,22 @@ const profileDescription = document.querySelector('.profile__description');
 
 function openPopup(popup) {
     popup.classList.add('popup_opened'); //добавляем к popup класс popup_opened
+    //закрытие popup кликом на оверлей
+    popup.addEventListener('click', function (evt) {
+        if (!evt.target.closest('.popup__content')) {
+            closePopup(evt.target.closest('.popup'));
+        }
+    });
+    //закрытие popup кнопкой ESC
+    document.addEventListener('keydown', function (evt) {
+        // console.log(evt.key)
+        if (evt.key === "Escape") {
+            const popupActive = document.querySelector('.popup_opened');
+            closePopup(popupActive);
+        }
+    });
 }
+
 
 function closePopup(popup) {
     popup.classList.remove('popup_opened'); //удаляем у popup класс popup_opened

@@ -58,11 +58,13 @@ const setEventListeners = (formElement) => {
     //set initial button state
     toggleButtonState(buttonElement, inputList);
 };
-const enableValidation = (formElement) => {
+
+const enableValidation = ({formSelector, ...restConfig}) => {
     //find all forms
-    const formList = Array.from(document.querySelectorAll('.popup__form'));
+    const formList = Array.from(document.querySelectorAll(formSelector));
     formList.forEach(formElement => {
-        //set ivet listeners for each form
-        setEventListeners(formElement);
+
+        //set ivent listeners for each form
+        setEventListeners(formElement, restConfig);
     });
 };
