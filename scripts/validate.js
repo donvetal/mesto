@@ -44,12 +44,12 @@ const validate = (popup, inputSelector, submitButtonSelector) => {
     const inputList = Array.from(popup.querySelectorAll(inputSelector));
     const buttonElement = popup.querySelector(submitButtonSelector);
     toggleButtonState(buttonElement, inputList);
-}
+};
 
 const setEventListeners = (popup, config) => {
 //prevent page reload on form submit
     const {formSelector, inputSelector, submitButtonSelector, popupCloseSelector, ...restConfig} = config;
-    const formElement = popup.querySelector(formSelector)
+    const formElement = popup.querySelector(formSelector);
     formElement.addEventListener('submit', (evt) => {
         // У каждой формы отменим стандартное поведение
         evt.preventDefault();
