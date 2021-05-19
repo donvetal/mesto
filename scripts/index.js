@@ -26,6 +26,7 @@ function openPopup(popup) {
             closePopup(popupActive);
         }
     });
+
 }
 
 
@@ -116,7 +117,6 @@ function createMesto({nameMesto, imageMesto}) {
         imagePopupName.textContent = mestoName.textContent;
         imagePopupFoto.src = mestoImage.src;
 
-
     }
 
     function closePopupImage() {
@@ -173,23 +173,14 @@ initialCards.forEach(function (element) {
 });
 
 //-----------------------Валидация-----------------------------------
-// const config = {
-//     formSelector: '.popup__form',
-//     inputSelector: '.popup__input',
-//     submitButtonSelector: 'popup__btn',
-//     inputErrorClass: '.popup__input_type_error',
-//     errorActiveClass: 'popup__input-error_active',
-//
-// };
-// enableValidation(config);//Добавил валидацию
-//-------------------------------------------------
 enableValidation({
     formSelector: '.popup__form',
     inputSelector: '.popup__input',
-    submitButtonSelector: 'popup__btn',
+    submitButtonSelector: '.popup__btn',
     inputErrorClass: '.popup__input_type_error',
     errorActiveClass: 'popup__input-error_active',
 });
+
 
 
 
