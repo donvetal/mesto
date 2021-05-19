@@ -12,7 +12,23 @@ const profileDescription = document.querySelector('.profile__description');
 
 function openPopup(popup) {
     popup.classList.add('popup_opened'); //добавляем к popup класс popup_opened
+    //закрытие popup кликом на оверлей
+    popup.addEventListener('click', function (evt) {
+        if (!evt.target.closest('.popup__content')) {
+            closePopup(evt.target.closest('.popup'));
+        }
+    });
+    //закрытие popup кнопкой ESC
+    document.addEventListener('keydown', function (evt) {
+        // console.log(evt.key)
+        if (evt.key === "Escape") {
+            const popupActive = document.querySelector('.popup_opened');
+            closePopup(popupActive);
+        }
+    });
+
 }
+
 
 function closePopup(popup) {
     popup.classList.remove('popup_opened'); //удаляем у popup класс popup_opened
@@ -22,6 +38,7 @@ function openPopupProfile() {
     openPopup(popupProfile);
     nameInput.value = profileTitle.textContent;
     jobInput.value = profileDescription.textContent;
+    validate(popupProfile, '.popup__input', '.popup__btn');
 }
 
 
@@ -53,6 +70,7 @@ const popupCloseMestoButton = document.querySelector('.popup__close_type_mesto')
 
 function handleOpenPopupMesto() {
     openPopup(popupMesto);
+    validate(popupMesto, '.popup__input', '.popup__btn');
 }
 
 function hendleClosePopupMesto() {
@@ -101,7 +119,6 @@ function createMesto({nameMesto, imageMesto}) {
         imagePopupName.textContent = mestoName.textContent;
         imagePopupFoto.src = mestoImage.src;
 
-
     }
 
     function closePopupImage() {
@@ -145,8 +162,6 @@ function handleFormSubmitMesto(evt) {
     const nameValue = nameInputMesto.value;
     const imageValue = imageInputMesto.value;
     mestoContainer.prepend(createMesto({nameMesto: nameValue, imageMesto: imageValue}));
-
-
 }
 
 
@@ -154,8 +169,19 @@ formElementMesto.addEventListener('submit', handleFormSubmitMesto);
 initialCards.forEach(function (element) {
     const newCard = createMesto({nameMesto: element.name, imageMesto: element.link});
     mestoContainer.append(newCard);
-
 });
+
+//-----------------------Валидация-----------------------------------
+enableValidation({
+    popupContentSelector: '.popup__content',
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__btn',
+    popupCloseSelector: '.popup__close',
+    inputErrorClass: '.popup__input_type_error',
+    errorActiveClass: 'popup__input-error_active',
+});
+
 
 
 
