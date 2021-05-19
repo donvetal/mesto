@@ -19,7 +19,6 @@ const showInputError = (formElement, inputElement, config) => {
 const checkInputValidity = (formElement, inputElement, config) => {
     //check input is valid
     //if valid, hide error else show error
-    console.log(inputElement.validity.valid);
     if (inputElement.validity.valid) {
         hideInputError(formElement, inputElement, config);
     } else {
@@ -40,10 +39,19 @@ const toggleButtonState = (buttonElement, inputList) => {
     }
 
 };
-const setEventListeners = (formElement, config) => {
+
+const validate = (popup, inputSelector, submitButtonSelector) => {
+    const inputList = Array.from(popup.querySelectorAll(inputSelector));
+    const buttonElement = popup.querySelector(submitButtonSelector);
+    toggleButtonState(buttonElement, inputList);
+}
+
+const setEventListeners = (popup, config) => {
 //prevent page reload on form submit
-    const {inputSelector, submitButtonSelector, ...restConfig} = config;
+    const {formSelector, inputSelector, submitButtonSelector, popupCloseSelector, ...restConfig} = config;
+    const formElement = popup.querySelector(formSelector)
     formElement.addEventListener('submit', (evt) => {
+        // У каждой формы отменим стандартное поведение
         evt.preventDefault();
     });
     //find all inputs
@@ -57,21 +65,24 @@ const setEventListeners = (formElement, config) => {
             toggleButtonState(buttonElement, inputList);
         });
     });
+    const popupClose = popup.querySelector(popupCloseSelector);
+    popupClose.addEventListener('click', () => {
+        inputList.forEach((inputElement) => {
+            hideInputError(formElement, inputElement, config);
+        });
+        buttonElement.disabled = true;
+    });
     //add listeners for all input
     //set initial button state
+
     toggleButtonState(buttonElement, inputList);
 };
 
-const enableValidation = ({formSelector, ...restConfig}) => {
+const enableValidation = ({popupContentSelector, ...restConfig}) => {
     //find all forms
-    const formList = Array.from(document.querySelectorAll(formSelector));
-    formList.forEach(formElement => {
-        formElement.addEventListener('submit', (evt) => {
-            // У каждой формы отменим стандартное поведение
-            evt.preventDefault();
-        });
-
+    const popups = Array.from(document.querySelectorAll(popupContentSelector));
+    popups.forEach(popup => {
         //set ivent listeners for each form
-        setEventListeners(formElement, restConfig);
+        setEventListeners(popup, restConfig);
     });
 };

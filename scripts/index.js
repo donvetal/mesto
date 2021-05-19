@@ -38,6 +38,7 @@ function openPopupProfile() {
     openPopup(popupProfile);
     nameInput.value = profileTitle.textContent;
     jobInput.value = profileDescription.textContent;
+    validate(popupProfile, '.popup__input', '.popup__btn');
 }
 
 
@@ -69,6 +70,7 @@ const popupCloseMestoButton = document.querySelector('.popup__close_type_mesto')
 
 function handleOpenPopupMesto() {
     openPopup(popupMesto);
+    validate(popupMesto, '.popup__input', '.popup__btn');
 }
 
 function hendleClosePopupMesto() {
@@ -160,8 +162,6 @@ function handleFormSubmitMesto(evt) {
     const nameValue = nameInputMesto.value;
     const imageValue = imageInputMesto.value;
     mestoContainer.prepend(createMesto({nameMesto: nameValue, imageMesto: imageValue}));
-
-
 }
 
 
@@ -169,14 +169,15 @@ formElementMesto.addEventListener('submit', handleFormSubmitMesto);
 initialCards.forEach(function (element) {
     const newCard = createMesto({nameMesto: element.name, imageMesto: element.link});
     mestoContainer.append(newCard);
-
 });
 
 //-----------------------Валидация-----------------------------------
 enableValidation({
+    popupContentSelector: '.popup__content',
     formSelector: '.popup__form',
     inputSelector: '.popup__input',
     submitButtonSelector: '.popup__btn',
+    popupCloseSelector: '.popup__close',
     inputErrorClass: '.popup__input_type_error',
     errorActiveClass: 'popup__input-error_active',
 });
