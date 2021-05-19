@@ -7,96 +7,96 @@
     <title>Mesto</title>
 </head>
 <body>
-<div class="page">
-    <header class="header page__container">
-        <img src="./images/header-logo.svg" alt="логотип" class="header__logo">
-    </header>
-    <main class="content">
-        <section class="profile page__container">
-            <img src="./images/profile-avatar.jpg" alt="аватар профайла" class="profile__avatar">
-            <div class="profile__info">
-                <div class="profile__title">
-                    <h1 class="profile__name">Жак-Ив Кусто</h1>
-                    <button type="button" class="profile__button"></button>
+    <div class="page">
+        <header class="header page__container">
+            <img src="./images/header-logo.svg" alt="логотип" class="header__logo">
+        </header>
+        <main class="content">
+            <section class="profile page__container">
+                <img src="./images/profile-avatar.jpg" alt="аватар профайла" class="profile__avatar">
+                <div class="profile__info">
+                    <div class="profile__title">
+                        <h1 class="profile__name">Жак-Ив Кусто</h1>
+                        <button type="button" class="profile__button"></button>
+                    </div>
+
+                    <p class="profile__description">Исследователь океана</p>
                 </div>
-
-                <p class="profile__description">Исследователь океана</p>
-            </div>
-            <button type="button" class="profile__add-button"></button>
+                <button type="button" class="profile__add-button"></button>
 
 
-        </section>
-        <section class="elements page__container">
-            <ul class="elements-cards">
+            </section>
+            <section class="elements page__container">
+                <ul class="elements-cards">
 
-            </ul>
-        </section>
-    </main>
+                </ul>
+            </section>
+        </main>
 
-    <footer class="footer page__container">
-        <p class="footer__copyright">&copy;2020. Mesto Russia</p>
-    </footer>
-
-</div>
-<div class="popup popup_type_profile">
-    <div class="popup__content">
-        <button type="button" class="popup__close popup__close_type_profile"></button>
-        <form action="#" name="popup-form" class="popup__form popup__form_type_profile" novalidate>
-            <h2 class="popup__title">Редактировать профиль</h2>
-            <input  id="popup-name" type="text" name="popup-name" placeholder="Имя" class="popup__input popup__input_type_name"
-                    value="" minlength="2"maxlength="40" required>
-            <span class="popup__input-error" id="popup-name-error"></span>
-            <input id="popup-job" type="text" name="popup-job" placeholder="О себе" class="popup__input popup__input_type_job"
-                   value="" minlength="2" maxlength="200" required>
-            <span class="popup__input-error" id="popup-job-error"></span>
-            <button type="submit" class="popup__btn">Сохранить</button>
-        </form>
+        <footer class="footer page__container">
+            <p class="footer__copyright">&copy;2020. Mesto Russia</p>
+        </footer>
 
     </div>
+    <div class="popup popup_type_profile">
+        <div class="popup__content">
+            <button type="button" class="popup__close popup__close_type_profile"></button>
+            <form action="#" name="popup-form" class="popup__form popup__form_type_profile" novalidate>
+                <h2 class="popup__title">Редактировать профиль</h2>
+                <input  id="popup-name" type="text" name="popup-name" placeholder="Имя" class="popup__input popup__input_type_name"
+                        value="" minlength="2"maxlength="40" required>
+                <span class="popup__input-error" id="popup-name-error"></span>
+                <input id="popup-job" type="text" name="popup-job" placeholder="О себе" class="popup__input popup__input_type_job"
+                       value="" minlength="2" maxlength="200" required>
+                <span class="popup__input-error" id="popup-job-error"></span>
+                <button type="submit" class="popup__btn">Сохранить</button>
+            </form>
 
-</div>
-<div class="popup popup_type_mesto">
-    <div class="popup__content">
-        <button type="button" class="popup__close popup__close_type_mesto"></button>
-        <form action="#" name="popup-form" class="popup__form popup__form_type_mesto" novalidate>
-            <h2 class="popup__title">Новое место</h2>
-            <input id="mesto-name" type="text" name="mesto-name" placeholder="Название"
-                   class="popup__input popup__input_type_mesto-name"
-                   value="" minlength="2" maxlength="30" required>
-            <span class="popup__input-error" id="mesto-name-error"></span>
-            <input id="mesto-image-link" type="url" name="mesto-image-link" placeholder="Ссылка на картинку"
-                   class="popup__input popup__input_type_mesto-image-link"
-                   value="" required>
-            <span class="popup__input-error" id="mesto-image-link-error"></span>
-            <button type="submit" class="popup__btn">Создать</button>
-        </form>
-
-    </div>
-
-</div>
-<div class="popup popup_type_image">
-    <div class="popup__container">
-        <button type="button" class="popup__close popup__close_type_image"></button>
-
-        <img src="#" alt="Фото места" class="popup__image">
-        <p class="popup__description"></p>
-
-
-    </div>
-
-</div>
-<template class="mesto-template">
-    <li class="card">
-        <button type="button" class="card__trash"></button>
-        <img src="#" alt="фото места" class="card__image">
-        <div class="card__conteiner">
-            <h2 class="card__name"></h2>
-            <button type="button" class="card__like card__like_disabled"></button>
         </div>
-    </li>
-</template>
-<script src="./scripts/initial-сards.js"></script>
-<script src="./scripts/validate.js"></script>
-<script src="./scripts/index.js"></script>
+
+    </div>
+    <div class="popup popup_type_mesto">
+        <div class="popup__content">
+            <button type="button" class="popup__close popup__close_type_mesto"></button>
+            <form action="#" name="popup-form" class="popup__form popup__form_type_mesto" novalidate>
+                <h2 class="popup__title">Новое место</h2>
+                <input id="mesto-name" type="text" name="mesto-name" placeholder="Название"
+                       class="popup__input popup__input_type_mesto-name"
+                       value="" minlength="2" maxlength="30" required>
+                <span class="popup__input-error" id="mesto-name-error"></span>
+                <input id="mesto-image-link" type="url" name="mesto-image-link" placeholder="Ссылка на картинку"
+                       class="popup__input popup__input_type_mesto-image-link"
+                       value="" required>
+                <span class="popup__input-error" id="mesto-image-link-error"></span>
+                <button type="submit" class="popup__btn">Создать</button>
+            </form>
+
+        </div>
+
+    </div>
+    <div class="popup popup_type_image">
+        <div class="popup__container">
+            <button type="button" class="popup__close popup__close_type_image"></button>
+
+            <img src="#" alt="Фото места" class="popup__image">
+            <p class="popup__description"></p>
+
+
+        </div>
+
+    </div>
+    <template class="mesto-template">
+        <li class="card">
+            <button type="button" class="card__trash"></button>
+            <img src="#" alt="фото места" class="card__image">
+            <div class="card__conteiner">
+                <h2 class="card__name"></h2>
+                <button type="button" class="card__like card__like_disabled"></button>
+            </div>
+        </li>
+    </template>
+    <script src="./scripts/initial-сards.js"></script>
+    <script src="./scripts/validate.js"></script>
+    <script src="./scripts/index.js"></script>
 </body>
 </html>
