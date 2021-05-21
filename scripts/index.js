@@ -12,26 +12,28 @@ const profileDescription = document.querySelector('.profile__description');
 
 function openPopup(popup) {
     popup.classList.add('popup_opened'); //добавляем к popup класс popup_opened
-    //закрытие popup кликом на оверлей
-    popup.addEventListener('click', function (evt) {
-        if (!evt.target.closest('.popup__content')) {
-            closePopup(evt.target.closest('.popup'));
+    //Добавление обработчиков закрытия попапа по оверлею кнопке крестик и кнопке крестик
+    popup.addEventListener('click', (evt) => {
+        if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close')) {
+            closePopup(popup);
         }
     });
     //закрытие popup кнопкой ESC
-    document.addEventListener('keydown', function (evt) {
-        // console.log(evt.key)
-        if (evt.key === "Escape") {
-            const popupActive = document.querySelector('.popup_opened');
-            closePopup(popupActive);
-        }
-    });
-
+    document.addEventListener('keydown', handeleEscUp);
 }
+
+//Функция закрытия по  ESC
+function handeleEscUp(evt) {
+    if (evt.key === "Escape") {
+        const popupActive = document.querySelector('.popup_opened');
+        closePopup(popupActive);
+    }
+};
 
 
 function closePopup(popup) {
     popup.classList.remove('popup_opened'); //удаляем у popup класс popup_opened
+    document.removeEventListener('keydown', handeleEscUp);
 }
 
 function openPopupProfile() {
@@ -42,18 +44,14 @@ function openPopupProfile() {
 }
 
 
-function closePopupProfile() {
-    closePopup(popupProfile);
-}
-
 popupOpenButton.addEventListener('click', openPopupProfile);
 
-popupCloseButton.addEventListener('click', closePopupProfile);
+popupCloseButton.addEventListener('click', () => closePopup(popupProfile));
 
 
 function formSubmitHandlerProfile(evt) {
     evt.preventDefault();
-    closePopupProfile();
+    closePopup(popupProfile);
     profileTitle.textContent = nameInput.value;
     profileDescription.textContent = jobInput.value;
 
@@ -70,6 +68,8 @@ const popupCloseMestoButton = document.querySelector('.popup__close_type_mesto')
 
 function handleOpenPopupMesto() {
     openPopup(popupMesto);
+    //очистка полей формы место
+    popupMesto.querySelector('.popup__form_type_mesto').reset();
     validate(popupMesto, '.popup__input', '.popup__btn');
 }
 
@@ -118,29 +118,18 @@ function createMesto({nameMesto, imageMesto}) {
         openPopup(popupMestoImage);
         imagePopupName.textContent = mestoName.textContent;
         imagePopupFoto.src = mestoImage.src;
-
+        imagePopupFoto.alt = 'фото ' + mestoName.textContent;
     }
 
-    function closePopupImage() {
-        closePopup(popupMestoImage);
 
-    }
-
-    formElementMesto.reset();
+    // formElementMesto.reset();
 
     mestoImage.addEventListener('click', openPopupImage);
 
-    popupCloseImageButton.addEventListener('click', closePopupImage);
+    popupCloseImageButton.addEventListener('click', () => closePopup(popupMestoImage));
     //---------------------------------------------------------------------------//
-
-
     cardLikeButton.addEventListener('click', function (evt) {
-        if (evt.target.classList.contains('card__like_active')) {
-            evt.target.classList.remove('card__like_active');
-        } else {
-            evt.target.classList.add('card__like_active');
-        }
-
+        evt.target.classList.toggle('card__like_active');
     });
 
 
@@ -162,6 +151,7 @@ function handleFormSubmitMesto(evt) {
     const nameValue = nameInputMesto.value;
     const imageValue = imageInputMesto.value;
     mestoContainer.prepend(createMesto({nameMesto: nameValue, imageMesto: imageValue}));
+    formElementMesto.reset();
 }
 
 
@@ -169,6 +159,7 @@ formElementMesto.addEventListener('submit', handleFormSubmitMesto);
 initialCards.forEach(function (element) {
     const newCard = createMesto({nameMesto: element.name, imageMesto: element.link});
     mestoContainer.append(newCard);
+
 });
 
 //-----------------------Валидация-----------------------------------
