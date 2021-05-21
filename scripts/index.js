@@ -1,8 +1,5 @@
 const popupOpenButton = document.querySelector('.profile__button');
 const popupProfile = document.querySelector('.popup_type_profile');
-
-const popupCloseButton = document.querySelector('.popup__close_type_profile');
-
 const formElementProfile = document.querySelector('.popup__form_type_profile');
 const nameInput = formElementProfile.querySelector('.popup__input_type_name');
 const jobInput = formElementProfile.querySelector('.popup__input_type_job');
@@ -12,14 +9,19 @@ const profileDescription = document.querySelector('.profile__description');
 
 function openPopup(popup) {
     popup.classList.add('popup_opened'); //добавляем к popup класс popup_opened
-    //Добавление обработчиков закрытия попапа по оверлею кнопке крестик и кнопке крестик
+    //закрытия попапа по оверлею и кнопке крестик
+    closePopupTarget(popup);
+    //закрытие popup кнопкой ESC
+    document.addEventListener('keydown', handeleEscUp);
+}
+
+//Функция добавление обработчиков закрытия попапа по оверлею и кнопке крестик
+function closePopupTarget(popup) {
     popup.addEventListener('click', (evt) => {
         if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close')) {
             closePopup(popup);
         }
     });
-    //закрытие popup кнопкой ESC
-    document.addEventListener('keydown', handeleEscUp);
 }
 
 //Функция закрытия по  ESC
@@ -45,8 +47,6 @@ function openPopupProfile() {
 
 
 popupOpenButton.addEventListener('click', openPopupProfile);
-
-popupCloseButton.addEventListener('click', () => closePopup(popupProfile));
 
 
 function formSubmitHandlerProfile(evt) {
