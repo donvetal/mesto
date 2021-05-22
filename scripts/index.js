@@ -7,21 +7,20 @@ const jobInput = formElementProfile.querySelector('.popup__input_type_job');
 const profileTitle = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 
+
 function openPopup(popup) {
     popup.classList.add('popup_opened'); //добавляем к popup класс popup_opened
     //закрытия попапа по оверлею и кнопке крестик
-    closePopupTarget(popup);
+    popup.addEventListener('click', handlePopupClose);
     //закрытие popup кнопкой ESC
     document.addEventListener('keydown', handeleEscUp);
 }
 
-//Функция добавление обработчиков закрытия попапа по оверлею и кнопке крестик
-function closePopupTarget(popup) {
-    popup.addEventListener('click', (evt) => {
-        if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close')) {
-            closePopup(popup);
-        }
-    });
+function handlePopupClose(evt) {
+    if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close')) {
+        const popupActive = document.querySelector('.popup_opened');
+        closePopup(popupActive);
+    }
 }
 
 //Функция закрытия по  ESC
@@ -36,6 +35,7 @@ function handeleEscUp(evt) {
 function closePopup(popup) {
     popup.classList.remove('popup_opened'); //удаляем у popup класс popup_opened
     document.removeEventListener('keydown', handeleEscUp);
+    document.removeEventListener('click', handlePopupClose);
 }
 
 function openPopupProfile() {
