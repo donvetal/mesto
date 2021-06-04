@@ -1,121 +1,100 @@
-
-/*
-Создайте класс FormValidator, который настраивает валидацию полей формы:
-принимает в конструктор объект настроек с селекторами и классами формы;
-принимает вторым параметром элемент той формы, которая валидируется;
-имеет приватные методы, которые обрабатывают форму: проверяют валидность поля, изменяют состояние кнопки сабмита, устанавливают все обработчики;
-имеет один публичный метод enableValidation, который включает валидацию формы.
-Для каждой проверяемой формы создайте экземпляр класса FormValidator.
- */
+// /*
+// Создайте класс FormValidator, который настраивает валидацию полей формы:
+// принимает в конструктор объект настроек с селекторами и классами формы;
+// принимает вторым параметром элемент той формы, которая валидируется;
+// имеет приватные методы, которые обрабатывают форму: проверяют валидность поля, изменяют состояние кнопки сабмита, устанавливают все обработчики;
+// имеет один публичный метод enableValidation, который включает валидацию формы.
+// Для каждой проверяемой формы создайте экземпляр класса FormValidator.
+//  */
 class FormValidator {
-    constructor(popup, config) {
-        this._config = config;
-        const {formSelector, inputSelector, submitButtonSelector, popupCloseSelector, ...restConfig} = config;
 
-        this._formElement = popup.querySelector(formSelector);
-
-        this.validate = () => {
-            this._toggleButtonState();
-        };
-
-        this._hazInvalidInput = (inputList) => {
-            return inputList.some(inputElement => !inputElement.validity.valid);
-        };
-        //find all inputs
-        this._inputList = Array.from(this._formElement.querySelectorAll(inputSelector));
-        //find button element
-        this._buttonElement = this._formElement.querySelector(submitButtonSelector);
-
-        popup.querySelector(popupCloseSelector).addEventListener('click', () => {
-            this._inputList.forEach((inputElement) => {
-                this._hideInputError(this._formElement, inputElement, config);
-            });
-            this._buttonElement.disabled = true;
-        });
-
-        this._hideInputError = (formElement, inputElement, config) => {
-            //hide error
-            //finde error element
-            const {inputErrorClass, errorActiveClass} = config;
-            const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
-            inputElement.classList.remove(inputErrorClass);
-            errorElement.classList.remove(errorActiveClass);
-            errorElement.textContent = '';
-        };
-        this._showInputError = (formElement, inputElement, config) => {
-            //show error
-            const {inputErrorClass, errorActiveClass} = config;
-            const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
-            inputElement.classList.add(inputErrorClass);
-            errorElement.textContent = inputElement.validationMessage;
-            errorElement.classList.add(errorActiveClass);
-        };
+    constructor(dataInit, formElement) {
+        this._inputSelector = dataInit.inputSelector;
+        this._submitButtonSelector = dataInit.submitButtonSelector;
+        this._inactiveButtonClass = dataInit.inactiveButtonClass;
+        this._inputErrorClass = dataInit.inputErrorClass;
+        this._errorClass = dataInit.errorClass;
+        this._formElement = formElement;
+        this._setEventListeners();
+        this._isEnabled = false;
     }
 
-    // включает валидацию формы
-    enableValidation() {
-        //add listeners for all input
-        //set initial button state
-        this._addHandlers()
-        this._toggleButtonState()
-    }
 
-    // проверяют валидность поля
-    _validate(inputElement) {
-        //check input is valid
+    _showInputError(inputElement) {
+        const errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
+        inputElement.classList.add(this._inputErrorClass);
+        errorElement.textContent = inputElement.validationMessage;
+        errorElement.classList.add(this._errorClass);
+    };
 
-        //check input is valid
-        //if valid, hide error else show error
-        if (inputElement.validity.valid) {
-            this._hideInputError(this._formElement, inputElement, this._config);
-        } else {
-            this._showInputError(this._formElement, inputElement, this._config);
+    _hideInputError(inputElement) {
+        const errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
+        inputElement.classList.remove(this._inputErrorClass);
+        errorElement.classList.remove(this._errorClass);
+        errorElement.textContent = '';
+    };
+
+    _checkInputValidity(inputElement) {
+        if (!this._isEnabled) {
+            return;
         }
-
-
-        if (this._hazInvalidInput(this._inputList)) {
-            //disable
-            this._buttonElement.disabled = true;
+        if (!inputElement.validity.valid) {
+            this._showInputError(inputElement);
         } else {
-            //enebled
-            this._buttonElement.disabled = false;
+            this._hideInputError(inputElement);
         }
-    }
-    // изменяют состояние кнопки сабмита
-    _toggleButtonState() {
-        if (this._hazInvalidInput(this._inputList) || this._inputList.every(item => !item.value.length)) {
-            //disable
-            this._buttonElement.disabled = true;
+    };
+
+    _hasInvalidInput(inputList) {
+        return inputList.some(inputElement => !inputElement.validity.valid);
+    };
+
+    _toggleButtonState(inputList, buttonElement) {
+        // Если есть хотя бы один невалидный инпут
+        if (this._hasInvalidInput(inputList)) {
+            // сделай кнопку неактивной
+            buttonElement.disabled = true;
+            buttonElement.classList.add(this._inactiveButtonClass);
         } else {
-            //enebled
-            this._buttonElement.disabled = false;
+            // иначе сделай кнопку активной
+            buttonElement.disabled = false;
+            buttonElement.classList.remove(this._inactiveButtonClass);
         }
-    }
-    // устанавливают все обработчики
-    _addHandlers() {
-        this._inputList.forEach((inputElement) => {
+    };
+
+    _setEventListeners() {
+        // найти все input
+        const inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
+        // Найдём в текущей форме кнопку отправки
+        const buttonElement = this._formElement.querySelector(this._submitButtonSelector);
+        // цикл по input с установкой события на ввод
+        inputList.forEach((inputElement) => {
             inputElement.addEventListener('input', () => {
-                this._validate(inputElement)
+                this._checkInputValidity(inputElement);
+                // Вызовем toggleButtonState и передадим ей массив полей и кнопку
+                this._toggleButtonState(inputList, buttonElement);
             });
         });
-        this._formElement.addEventListener('submit', (evt) => {
-            // У каждой формы отменим стандартное поведение
-            evt.preventDefault();
+    };
+
+    preparationFormBeforeOpen() {
+        // скрыть подсветку прежнмх ошибок
+        const inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
+        inputList.forEach((inputElement) => {
+            this._hideInputError(inputElement);
         });
+        // Найдём в текущей форме кнопку отправки
+        const buttonElement = this._formElement.querySelector(this._submitButtonSelector);
+        this._toggleButtonState(inputList, buttonElement);
     }
+
+    enableValidation() {
+        this._isEnabled = true;
+    };
+
 }
 
-const validators = []
+export {FormValidator};
 
-const enableValidation = ({popupContentSelector, ...restConfig}) => {
-    //find all forms
-    const popups = Array.from(document.querySelectorAll(popupContentSelector));
-    popups.forEach(popup => {
-        //set ivent listeners for each form
-        // setEventListeners(popup, restConfig);
-        const v = new FormValidator(popup, restConfig);
-        v.enableValidation()
-        validators.push(v);
-    });
-};
-export {FormValidator, validators, enableValidation}
+
+

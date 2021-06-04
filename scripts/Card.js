@@ -7,6 +7,12 @@
 содержит приватные методы для каждого обработчика;
 содержит один публичный метод, который возвращает полностью работоспособный и наполненный данными элемент карточки.
  */
+import {openPopup} from "./utils/utils.js";
+
+const popupMestoImage = document.querySelector('.popup_type_image');
+const imagePopupName = document.querySelector('.popup__description');
+const imagePopupFoto = document.querySelector('.popup__image');
+
 
 class Card {
     constructor(data, cardSelector) {
@@ -32,44 +38,16 @@ class Card {
         this._setEventListeners();
         this._element.querySelector('.card__name').textContent = this._imageName;
         this._element.querySelector('.card__image').src = this._imageLink;
+        this._element.querySelector('.card__image').alt = 'фото ' + this._imageName;
         return this._element;
     };
 
-    _openPopup = (popup) => {
-        popup.classList.add('popup_opened'); //добавляем к popup класс popup_opened
-        //закрытия попапа по оверлею и кнопке крестик
-        popup.addEventListener('click', this._handlePopupClose);
-        //закрытие popup кнопкой ESC
-        document.addEventListener('keydown', this._handeleEscUp);
-    };
-
-    _handlePopupClose = (evt) => {
-        if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close')) {
-            const popupActive = document.querySelector('.popup_opened');
-            this._closePopup(popupActive);
-        }
-    };
-
-//Функция закрытия по  ESC
-    _handeleEscUp = (evt) => {
-        if (evt.key === "Escape") {
-            const popupActive = document.querySelector('.popup_opened');
-            this._closePopup(popupActive);
-        }
-    };
-
-    _closePopup = (popup) => {
-        if (!popup) return;
-        popup.classList.remove('popup_opened'); //удаляем у popup класс popup_opened
-        document.removeEventListener('keydown', this._handeleEscUp);
-        document.removeEventListener('click', this._handlePopupClose);
-    };
     _handleOpenPopup = () => {
 
-        this._openPopup(document.querySelector('.popup_type_image'));
-        (document.querySelector('.popup__image')).src = this._imageLink;
-        (document.querySelector('.popup__description')).textContent = this._imageName;
-        (document.querySelector('.popup__image')).alt = 'фото ' + this._imageName;
+        openPopup(popupMestoImage);
+        imagePopupFoto.src = this._imageLink;
+        imagePopupName.textContent = this._imageName;
+        imagePopupFoto.alt = 'фото ' + this._imageName;
 
     };
 
