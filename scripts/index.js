@@ -1,6 +1,7 @@
 import {initialCards} from "./initial-сards.js";
 import {Card} from "./Card.js";
-import {enableValidation, validators} from "./FormValidator.js";
+import {FormValidator} from "./FormValidator.js";
+import {closePopup, openPopup} from "./utils/utils.js";
 
 const popupOpenButton = document.querySelector('.profile__button');
 const popupProfile = document.querySelector('.popup_type_profile');
@@ -11,49 +12,18 @@ const jobInput = formElementProfile.querySelector('.popup__input_type_job');
 const profileTitle = document.querySelector('.profile__name');
 const profileDescription = document.querySelector('.profile__description');
 
-
-function openPopup(popup) {
-    popup.classList.add('popup_opened'); //добавляем к popup класс popup_opened
-    //закрытия попапа по оверлею и кнопке крестик
-    popup.addEventListener('click', handlePopupClose);
-    //закрытие popup кнопкой ESC
-    document.addEventListener('keydown', handeleEscUp);
-}
-
-function handlePopupClose(evt) {
-    if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close')) {
-        const popupActive = document.querySelector('.popup_opened');
-        closePopup(popupActive);
-    }
-}
-
-//Функция закрытия по  ESC
-function handeleEscUp(evt) {
-    if (evt.key === "Escape") {
-        const popupActive = document.querySelector('.popup_opened');
-        closePopup(popupActive);
-    }
-}
-
-function closePopup(popup) {
-    if (!popup) return;
-    popup.classList.remove('popup_opened'); //удаляем у popup класс popup_opened
-    document.removeEventListener('keydown', handeleEscUp);
-    document.removeEventListener('click', handlePopupClose);
-}
-
 function openPopupProfile() {
     openPopup(popupProfile);
     nameInput.value = profileTitle.textContent;
     jobInput.value = profileDescription.textContent;
-    validators[0].validate();
+    formValidatorProfile.preparationFormBeforeOpen();
 }
 
 
 popupOpenButton.addEventListener('click', openPopupProfile);
 
 
-function formSubmitHandlerProfile(evt) {
+function submitEditProfileForm(evt) {
     evt.preventDefault();
     closePopup(popupProfile);
     profileTitle.textContent = nameInput.value;
@@ -61,7 +31,7 @@ function formSubmitHandlerProfile(evt) {
 
 }
 
-formElementProfile.addEventListener('submit', formSubmitHandlerProfile);
+formElementProfile.addEventListener('submit', submitEditProfileForm);
 
 
 //------------------------------- Popup Mesto----------------------------------//
@@ -74,7 +44,7 @@ function handleOpenPopupMesto() {
     openPopup(popupMesto);
     //очистка полей формы место
     popupMesto.querySelector('.popup__form_type_mesto').reset();
-    validators[1].validate();
+    addCardFormValidator.preparationFormBeforeOpen();
 }
 
 function hendleClosePopupMesto() {
@@ -90,15 +60,17 @@ popupCloseMestoButton.addEventListener('click', hendleClosePopupMesto);
 const formElementMesto = document.querySelector('.popup__form_type_mesto');
 const nameInputMesto = formElementMesto.querySelector('.popup__input_type_mesto-name');
 const imageInputMesto = formElementMesto.querySelector('.popup__input_type_mesto-image-link');
-//
-//
-
 
 //--------------------------------------Foto popup------------------------------------------//
-// const popupMestoImage = document.querySelector('.popup_type_image');
-// const imagePopupName = document.querySelector('.popup__description');
-// const imagePopupFoto = document.querySelector('.popup__image');
+const mestoContainer = document.querySelector('.elements-cards');
+const mestoTemplate = document.querySelector('.mesto-template');
 
+//Функционал создания карточки
+function createCard(item, selector) {
+    const card = new Card(item, selector);
+    const cardElement = card.generateCard();
+    return cardElement;
+}
 
 function handleFormSubmitMesto(evt) {
     evt.preventDefault();
@@ -106,9 +78,9 @@ function handleFormSubmitMesto(evt) {
     const name = nameInputMesto.value;
     const link = imageInputMesto.value;
 
-    const card = new Card({name, link}, ".mesto-template");
-    const cardElement = card.generateCard();
-    document.querySelector('.elements-cards').prepend(cardElement);
+    const cardElement = createCard({name, link}, `${"." + mestoTemplate.classList.value}`);
+
+    mestoContainer.prepend(cardElement);
 
     formElementMesto.reset();
 }
@@ -121,21 +93,27 @@ formElementMesto.addEventListener('submit', handleFormSubmitMesto);
 // подготавливаю карточку к публикации и возвращаю результат,
 // публикую карточку в '.elements-cards' DOM-дерева.
 initialCards.forEach((item) => {
-    const card = new Card(item, ".mesto-template");
-    const cardElement = card.generateCard();
-    document.querySelector('.elements-cards').append(cardElement);
+    const cardElement = createCard(item, `${"." + mestoTemplate.classList.value}`);
+    mestoContainer.append(cardElement);
 });
 
 //-----------------------Валидация-----------------------------------
-enableValidation({
-    popupContentSelector: '.popup__content',
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__btn',
-    popupCloseSelector: '.popup__close',
-    inputErrorClass: 'popup__input_type_error',
-    errorActiveClass: 'popup__input-error_active',
-});
+const popupContainer = popupProfile.querySelector('.popup__form');
+const popupContainerElem = popupMesto.querySelector('.popup__form');
+const initialValid =
+    {
+        inputSelector: '.popup__input',
+        submitButtonSelector: '.popup__btn',
+        inactiveButtonClass: 'popup__btn_inactive',
+        inputErrorClass: 'popup__input_type_error',
+        errorClass: 'popup__input-error_active',
+    };
+
+const formValidatorProfile = new FormValidator(initialValid, popupContainer);
+formValidatorProfile.enableValidation();
+
+const addCardFormValidator = new FormValidator(initialValid, popupContainerElem);
+addCardFormValidator.enableValidation();
 
 
 
