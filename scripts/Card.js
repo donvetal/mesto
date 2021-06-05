@@ -1,12 +1,3 @@
-//--------------------------Card-------------------------------//
-
-/*
-Создайте класс Card, который создаёт карточку с текстом и ссылкой на изображение:
-принимает в конструктор её данные и селектор её template-элемента;
-содержит приватные методы, которые работают с разметкой, устанавливают слушателей событий;
-содержит приватные методы для каждого обработчика;
-содержит один публичный метод, который возвращает полностью работоспособный и наполненный данными элемент карточки.
- */
 import {openPopup} from "./utils/utils.js";
 
 const popupMestoImage = document.querySelector('.popup_type_image');
@@ -35,10 +26,11 @@ class Card {
     // метод generateCard , вставит данные из массива  initialCards в разметку и подготовит карточку к публикации в DOM.
     generateCard = () => {
         this._element = this._getTemplate();
+        this._cardImage = this._element.querySelector('.card__image');
         this._setEventListeners();
         this._element.querySelector('.card__name').textContent = this._imageName;
-        this._element.querySelector('.card__image').src = this._imageLink;
-        this._element.querySelector('.card__image').alt = 'фото ' + this._imageName;
+        this._cardImage.src = this._imageLink;
+        this._cardImage.alt = 'фото ' + this._imageName;
         return this._element;
     };
 
@@ -52,7 +44,7 @@ class Card {
     };
 
     _setEventListeners = () => {
-        this._element.querySelector('.card__image').addEventListener('click', () => {
+        this._cardImage.addEventListener('click', () => {
             this._handleOpenPopup();
         });
 

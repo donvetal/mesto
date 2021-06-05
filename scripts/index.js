@@ -47,14 +47,14 @@ function handleOpenPopupMesto() {
     addCardFormValidator.preparationFormBeforeOpen();
 }
 
-function hendleClosePopupMesto() {
+function handleClosePopupAddCard() {
     closePopup(popupMesto);
 
 }
 
 popupOpenMestoButton.addEventListener('click', handleOpenPopupMesto);
 
-popupCloseMestoButton.addEventListener('click', hendleClosePopupMesto);
+popupCloseMestoButton.addEventListener('click', handleClosePopupAddCard);
 
 
 const formElementMesto = document.querySelector('.popup__form_type_mesto');
@@ -74,7 +74,7 @@ function createCard(item, selector) {
 
 function handleFormSubmitMesto(evt) {
     evt.preventDefault();
-    hendleClosePopupMesto();
+    handleClosePopupAddCard();
     const name = nameInputMesto.value;
     const link = imageInputMesto.value;
 
