@@ -1,3 +1,5 @@
+import {Card} from "../components/Card.js";
+
 export function openPopup(popup) {
     popup.classList.add('popup_opened'); //добавляем к popup класс popup_opened
     //закрытия попапа по оверлею и кнопке крестик
@@ -27,3 +29,10 @@ export function closePopup(popup) {
     document.removeEventListener('keydown', handeleEscUp);
     document.removeEventListener('click', handlePopupClose);
 };
+
+//Функционал создания карточки
+export function createCard(item, selector) {
+    const card = new Card(item, selector);
+    const cardElement = card.generateCard();
+    return cardElement;
+}
