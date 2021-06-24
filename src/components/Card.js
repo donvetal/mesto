@@ -1,17 +1,9 @@
-import {openPopup} from "../utils/utils.js";
-
-const popupMestoImage = document.querySelector('.popup_type_image');
-const imagePopupName = document.querySelector('.popup__description');
-const imagePopupFoto = document.querySelector('.popup__image');
-
-
 class Card {
-    constructor(data, cardSelector) {
-
+    constructor(data, cardSelector, handleCardClick) {
         this._imageName = data.name;
         this._imageLink = data.link;
         this._cardSelector = cardSelector;
-
+        this._handleOpenPopup = handleCardClick;
     }
 
     //метод _getTemplate, найдёт template-элемент с классом this._cardSelector(селектор шаблона),
@@ -34,18 +26,9 @@ class Card {
         return this._element;
     };
 
-    _handleOpenPopup = () => {
-
-        openPopup(popupMestoImage);
-        imagePopupFoto.src = this._imageLink;
-        imagePopupName.textContent = this._imageName;
-        imagePopupFoto.alt = 'фото ' + this._imageName;
-
-    };
-
     _setEventListeners = () => {
         this._cardImage.addEventListener('click', () => {
-            this._handleOpenPopup();
+            this._handleOpenPopup({link: this._imageLink, name: this._imageName});
         });
 
         // удаления карточки
@@ -57,10 +40,7 @@ class Card {
         this._element.querySelector('.card__like').addEventListener('click', (evt) => {
             evt.target.classList.toggle('card__like_active');
         });
-
     };
-
 }
 
 export {Card};
-

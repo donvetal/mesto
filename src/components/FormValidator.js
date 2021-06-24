@@ -1,4 +1,4 @@
-class FormValidator {
+export default class FormValidator {
 
     constructor(dataInit, formElement) {
         this._inputSelector = dataInit.inputSelector;
@@ -69,7 +69,7 @@ class FormValidator {
         });
     };
 
-    preparationFormBeforeOpen() {
+    reset() {
         // скрыть подсветку прежнмх ошибок
         const inputList = Array.from(this._formElement.querySelectorAll(this._inputSelector));
         inputList.forEach((inputElement) => {
@@ -86,7 +86,6 @@ class FormValidator {
 
 }
 
-export {FormValidator};
 
 
 
