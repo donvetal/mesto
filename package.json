@@ -4,7 +4,7 @@
   "description": "**Описание проекта:**",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf dist && webpack",
+    "build": "webpack",
     "dev": "webpack serve"
   },
   "repository": {
@@ -18,8 +18,7 @@
   },
   "homepage": "https://github.com/donvetal/mesto#readme",
   "dependencies": {
-    "core-js": "^3.14.0",
-    "webpack": "^5.38.1"
+    "core-js": "^3.14.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
@@ -32,6 +31,7 @@
     "html-webpack-plugin": "^5.3.1",
     "mini-css-extract-plugin": "^1.6.0",
     "postcss-loader": "^6.1.0",
+    "webpack": "^5.40.0",
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2"
   }

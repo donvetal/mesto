@@ -4,6 +4,7 @@ import {
     mestoTemplate,
     popupOpenButton,
     popupOpenMestoButton,
+    initialValid
 } from "../utils/constants.js";
 import "./index.css";
 import FormValidator from "../components/FormValidator.js";
@@ -13,21 +14,7 @@ import UserInfo from "../components/UserInfo";
 import PopupWithImage from "../components/PopupWithImage";
 import {Card} from "../components/Card";
 
-const userInfo = new UserInfo({userNameSelector: '.profile__name', userInfoSelector: '.profile__description'});
-const popupProfile = new PopupWithForm('.popup_type_profile', (values) => {
-    userInfo.setUserInfo({name: values['popup-name'], info: values['popup-job']}); // A
-});
-const popupMesto = new PopupWithForm('.popup_type_mesto', (values) => {
-    const name = values['mesto-name'];
-    const link = values['mesto-image-link'];
-    const cardElement = createCard({name, link}, `${"." + mestoTemplate.classList.value}`);
-    mestoContainer.prepend(cardElement);
-});
-const popupMestoImage = new PopupWithImage('.popup_type_image');
-popupOpenButton.addEventListener('click', popupProfile.open.bind(popupProfile));
-
-popupOpenMestoButton.addEventListener('click', popupMesto.open.bind(popupMesto));
-
+export const userInfo = new UserInfo({userNameSelector: '.profile__name', userInfoSelector: '.profile__description'});
 const cardsList = new Section({
         items: initialCards,
         renderer: (item) => {
@@ -37,18 +24,33 @@ const cardsList = new Section({
     },
     '.elements-cards');
 cardsList.renderItems();
-//-----------------------Валидация-----------------------------------
-const popupContainer = popupProfile.popup.querySelector('.popup__form');
-const popupContainerElem = popupMesto.popup.querySelector('.popup__form');
+const popupProfile = new PopupWithForm('.popup_type_profile', (values) => {
+    userInfo.setUserInfo({name: values['popup-name'], info: values['popup-job']}); // A
+});
+const popupMesto = new PopupWithForm('.popup_type_mesto', (values) => {
+    const name = values['mesto-name'];
+    const link = values['mesto-image-link'];
+    const cardElement = createCard({name, link}, `${"." + mestoTemplate.classList.value}`);
+    cardsList.addItem(cardElement);
+    addCardFormValidator.reset();
+});
 
-const initialValid =
-    {
-        inputSelector: '.popup__input',
-        submitButtonSelector: '.popup__btn',
-        inactiveButtonClass: 'popup__btn_inactive',
-        inputErrorClass: 'popup__input_type_error',
-        errorClass: 'popup__input-error_active',
-    };
+const popupMestoImage = new PopupWithImage('.popup_type_image');
+popupOpenButton.addEventListener('click',  () => {
+    popupProfile.inputList[0].value = userInfo.getUserInfo().name;
+    popupProfile.inputList[1].value = userInfo.getUserInfo().info;
+    popupProfile.open();
+    formValidatorProfile.reset();
+});
+
+popupOpenMestoButton.addEventListener('click', () => {
+    popupMesto.open();
+    addCardFormValidator.reset();
+});
+
+//-----------------------Валидация-----------------------------------
+export const popupContainer = popupProfile.popup.querySelector('.popup__form');
+export const popupContainerElem = popupMesto.popup.querySelector('.popup__form');
 
 export const formValidatorProfile = new FormValidator(initialValid, popupContainer);
 formValidatorProfile.enableValidation();
