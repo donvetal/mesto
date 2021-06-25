@@ -1,5 +1,4 @@
 import Popup from "./Popup.js";
-import {addCardFormValidator, formValidatorProfile, userInfo} from "../pages";
 
 export default class PopupWithForm extends Popup {
     constructor(popupSelector, onFormSubmit) { // B
@@ -27,10 +26,5 @@ export default class PopupWithForm extends Popup {
         super.close();
         this._formValues = {};
         this.inputList.forEach(input => input.value = "");
-        if (this.popup.classList.contains('popup_type_profile')) {
-            formValidatorProfile.reset();
-        } else if (this.popup.classList.contains('popup_type_mesto')) {
-            addCardFormValidator.reset();
-        }
     }
 }

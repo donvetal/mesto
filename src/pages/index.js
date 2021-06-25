@@ -37,8 +37,8 @@ const popupMesto = new PopupWithForm('.popup_type_mesto', (values) => {
 
 const popupMestoImage = new PopupWithImage('.popup_type_image');
 popupOpenButton.addEventListener('click',  () => {
-    popupProfile.inputList[0].value = userInfo.getUserInfo().name;
-    popupProfile.inputList[1].value = userInfo.getUserInfo().info;
+    popupProfile.popup.querySelector('.popup__input_type_name').value = userInfo.getUserInfo().name;
+    popupProfile.popup.querySelector('.popup__input_type_job').value = userInfo.getUserInfo().info;
     popupProfile.open();
     formValidatorProfile.reset();
 });
