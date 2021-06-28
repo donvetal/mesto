@@ -1,6 +1,5 @@
 import {
     initialCards,
-    mestoContainer,
     mestoTemplate,
     popupOpenButton,
     popupOpenMestoButton,
