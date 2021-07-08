@@ -1,5 +1,6 @@
 .popup__btn {
-    margin: 45px 0 0;
+    /*margin: 45px 0 0;*/
+    margin: 0;
     padding: 0;
     width: 100%;
     min-height: 46px;
@@ -28,7 +29,6 @@
 @media (min-width: 720px) {
     .popup__btn {
         font-size: 18px;
-        margin-top: 48px;
         min-height: 50px;
     }
 }

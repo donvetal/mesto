@@ -9,4 +9,6 @@
     border-radius: 10px 10px 0 0;
     min-width: auto;
     cursor: pointer;
+    object-fit: cover;
+    object-position: 50% 50%;
 }

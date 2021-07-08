@@ -76,13 +76,33 @@
     <div class="popup popup_type_image">
         <div class="popup__container">
             <button type="button" class="popup__close popup__close_type_image"></button>
-
             <img src="#" alt="Фото места" class="popup__image">
             <p class="popup__description"></p>
-
-
         </div>
 
+    </div>
+    <div class="popup popup_type_delete-image">
+        <div class="popup__content">
+            <button type="button" class="popup__close popup__close_delete-image"></button>
+            <h2 class="popup__title">Вы уверены?</h2>
+            <button type="button" class="popup__btn popup__btn_delete-card">Да</button>
+        </div>
+    </div>
+    <div class="popup popup_type_update-avatar">
+        <div class="popup__content">
+            <button type="button" class="popup__close popup__close_update-avatar"></button>
+            <form action="#" name="popup-form" class="popup__form popup__form_type_avatar" novalidate>
+                <h2 class="popup__title">Обновить аватар</h2>
+                <input id="avatar-link" type="url" name="avatar-link" placeholder="Ссылка на аватар"
+                       class="popup__input popup__input_type_avatar-link"
+                       value="" required>
+                <span class="popup__input-error" id="avatar-link-error"></span>
+                <button type="submit" class="popup__btn">Сохранить</button>
+            </form>
+<!--            <button type="button" class="popup__close popup__close_delete-image"></button>-->
+<!--            <h2 class="popup__title">Обновить аватар</h2>-->
+<!--            <button type="submit" class="popup__btn">Сохранить</button>-->
+        </div>
     </div>
     <template class="mesto-template">
         <li class="card">
@@ -90,7 +110,10 @@
             <img src="#" alt="фото места" class="card__image">
             <div class="card__conteiner">
                 <h2 class="card__name"></h2>
+                <div class="card__like-conteiner">
                 <button type="button" class="card__like card__like_disabled"></button>
+                <p class="card__like-number"></p>
+                </div>
             </div>
         </li>
     </template>

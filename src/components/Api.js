@@ -18,25 +18,39 @@ export class Api {
   })
 });
      */
+// 5d1f0611d321eb4bdcd707dd
+    // DELETE https://mesto.nomoreparties.co/v1/cohortId/cards/5d1f0611d321eb4bdcd707dd
+    // DELETE https://mesto.nomoreparties.co/v1/cohortId/cards/likes/cardId
+    // PUT https://mesto.nomoreparties.co/v1/cohortId/cards/likes/cardId
+    //5d1f0611d321eb4bdcd707dd
+    //PATCH https://mesto.nomoreparties.co/v1/cohortId/users/me/avatar
 
-    listItems = () => this._fetch('GET', '/cards')
+    changeAvatar = (link) => this._fetch('PATCH', '/users/me/avatar', {'avatar': link});
+    
+    deleteLike = (id) => this._fetch('DELETE', '/cards/likes/' + id);
 
-    getUserInfo  = () => this._fetch('GET', '/users/me')
+    putLike = (id) => this._fetch('PUT', '/cards/likes/' + id);
 
-    updateUserInfo = (name, about) => this._fetch('PATCH', '/users/me', {name, about})
+    deleteCard = (id) => this._fetch('DELETE', '/cards/' + id);
 
-    addNewCard = (body) => this._fetch('POST', '/cards', body)
+    listItems = () => this._fetch('GET', '/cards');
+
+    getUserInfo = () => this._fetch('GET', '/users/me');
+
+    updateUserInfo = (name, about) => this._fetch('PATCH', '/users/me', {name, about});
+
+    addNewCard = (body) => this._fetch('POST', '/cards', body);
 
     _fetch(method, path, body) {
         let options = {
             method,
             headers: this.headers,
-        }
-        if((method === 'PATCH' || method == 'POST') && body) {
+        };
+        if ((method === 'PATCH' || method == 'POST') && body) {
             options = {
                 ...options,
                 body: JSON.stringify(body)
-            }
+            };
         }
         return fetch(this.url + 'cohort-25' + path, options)
             .then(res => {

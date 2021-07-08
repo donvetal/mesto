@@ -1,11 +1,4 @@
-import {
-    initialCards,
-    initialValid,
-    mestoTemplate,
-    options,
-    popupOpenButton,
-    popupOpenMestoButton
-} from "../utils/constants.js";
+import {initialValid, mestoTemplate, popupOpenButton, popupOpenMestoButton} from "../utils/constants.js";
 import "./index.css";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
@@ -14,13 +7,18 @@ import UserInfo from "../components/UserInfo";
 import PopupWithImage from "../components/PopupWithImage";
 import {Card} from "../components/Card";
 import {Api} from "../components/Api";
+import PopupDeleteCard from "../components/PopupDeleteCard";
 
 
-export const userInfo = new UserInfo({userNameSelector: '.profile__name', userInfoSelector: '.profile__description', userAvatarSelector: '.profile__avatar'});
+export const userInfo = new UserInfo({
+    userNameSelector: '.profile__name',
+    userInfoSelector: '.profile__description',
+    userAvatarSelector: '.profile__avatar'
+});
 
 
 //добавил
-const api = new Api({
+export const api = new Api({
     url: 'https://mesto.nomoreparties.co/v1/',
     headers: {
         authorization: '6c5c2ad0-ab62-45ad-b6d9-d0d31ad5dd6b',
@@ -37,83 +35,59 @@ const getListItems = () => api.listItems()
                 renderer: (data) => {
                     const cardElement = createCard(data, `${"." + mestoTemplate.classList.value}`);
                     cardsList.addItem(cardElement);
+                    //удалил корзину из чужих карточек
+                    if(userInfo.getUserInfo().id != data.owner._id) {
+                        document.querySelector('.card__trash').remove();
+                    }
+                    // if(data.likes.some(like => userInfo.getUserInfo().id === like._id)) {
+                    //     console.log('Hello')
+                    //     // cardElement._element.querySelector('.card__like').classList.add('card__like_active');
+                    // }
+                    data.likes.forEach(item => {
+                        if(item._id === userInfo.getUserInfo().id ) {
+                            cardElement.querySelector('.card__like').classList.add('card__like_active');
+                        }
+                    })
+
                 }
             },
             '.elements-cards');
         cardsList.renderItems();
     });
-getListItems()
+
 
 api.getUserInfo()
     .then(data => {
-        console.log(data);
         userInfo.setUserInfo({
+            id: data._id,
             name: data.name,
             info: data.about,
             avatar: data.avatar
-        })
-    })
+        });
 
-//было
-// const cardsList = new Section({
-//         items: initialCards,
-//         renderer: (item) => {
-//             const cardElement = createCard(item, `${"." + mestoTemplate.classList.value}`);
-//             cardsList.addItem(cardElement);
-//         }
-//     },
-//     '.elements-cards');
-// cardsList.renderItems();
+        getListItems();
 
+    });
 
-/*
-
-       https://mesto.nomoreparties.co/v1/cohort-25/users/me
-fetch('https://mesto.nomoreparties.co/v1/cohortId/users/me', {
-  method: 'PATCH',
-  headers: {
-    authorization: 'c56e30dc-2883-4270-a59e-b2f7bae969c6',
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    name: 'Marie Skłodowska Curie',
-    about: 'Physicist and Chemist'
-  })
-});
-
-
- */
 const popupProfile = new PopupWithForm('.popup_type_profile', (values) => {
-    console.log(values)
-    api.updateUserInfo( values['popup-name'], values['popup-job'])
+    popupProfile.popup.querySelector('.popup__btn').textContent = 'Сохраняем...'
+    api.updateUserInfo(values['popup-name'], values['popup-job'])
         .then(data => {
             userInfo.setUserInfo({
                 name: data.name,
                 info: data.about
-            })
+            });
         })
-    });
+        .finally(() => {
+            popupProfile.popup.querySelector('.popup__btn').textContent = 'Сохранить'
+        })
+});
 const popupMesto = new PopupWithForm('.popup_type_mesto', (values) => {
-    /*
-     {
-    "likes": [],
-    "_id": "5d1f0611d321eb4bdcd707dd",
-    "name": "Байкал",
-    "link": "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-    "owner": {
-      "name": "Jacques Cousteau",
-      "about": "Sailor, researcher",
-      "avatar": "https://pictures.s3.yandex.net/frontend-developer/ava.jpg",
-      "_id": "ef5f7423f7f5e22bef4ad607",
-      "cohort": "local"
-    },
-    "createdAt": "2019-07-05T08:10:57.741Z"
-  },
-     */
 
     function uuidv4() {
-        return 'xxxxxxxx'.replace(/[xy]/g, function(c) {
-            const r = Math.random() * 8 | 0; const v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return 'xxxxxxxx'.replace(/[xy]/g, function (c) {
+            const r = Math.random() * 8 | 0;
+            const v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(8);
         });
     }
@@ -121,6 +95,9 @@ const popupMesto = new PopupWithForm('.popup_type_mesto', (values) => {
 
     const name = values['mesto-name'];
     const link = values['mesto-image-link'];
+    //----------добавил
+    const likes = [];
+    popupMesto.popup.querySelector('.popup__btn').textContent = 'Создаем...'
     api.addNewCard(
         {
             "likes": [],
@@ -135,15 +112,39 @@ const popupMesto = new PopupWithForm('.popup_type_mesto', (values) => {
             "createdAt": new Date().toLocaleTimeString()
         }
     ).then(_ => {
-        /*document.querySelector('.elements-cards').innerHTML = ""
-        getListItems()*/
-        const cardElement = createCard({name, link}, `${"." + mestoTemplate.classList.value}`);
-        cardsList.addItem(cardElement);
-        addCardFormValidator.reset();
+        document.querySelector('.elements-cards').innerHTML = ""
+        getListItems()
+        //добавил
+        // const cardElement = createCard({name, link, likes}, `${"." + mestoTemplate.classList.value}`);
+        // cardsList.addItem(cardElement);
+        // addCardFormValidator.reset();
     })
+        .finally(() => {
+            popupMesto.popup.querySelector('.popup__btn').textContent = 'Создать'
+        })
 
 });
 
+const popupUpdateAvatar = new PopupWithForm('.popup_type_update-avatar', values => {
+    popupUpdateAvatar.popup.querySelector('.popup__btn').textContent = 'Сохранение...'
+    api.changeAvatar(values['avatar-link'])
+        .then(_ => {
+            const link = values['avatar-link']
+            document.querySelector('.profile__avatar').src = link;
+        })
+        .finally(_ => {
+            popupUpdateAvatar.popup.querySelector('.popup__btn').textContent = 'Сохранить'
+        })
+});
+// const popupDeleteCard = new PopupDeleteCard('.popup_type_delete-image');
+// const deleteButton = document.querySelector('.card__trash');
+// deleteButton.addEventListener('click', () => {
+//     popupDeleteCard.open();
+// })
+document.querySelector('.profile__avatar').addEventListener('click',  () => {
+    popupUpdateAvatar.open();
+    updateAvatarValidator.reset();
+})
 const popupMestoImage = new PopupWithImage('.popup_type_image');
 popupOpenButton.addEventListener('click', () => {
     popupProfile.popup.querySelector('.popup__input_type_name').value = userInfo.getUserInfo().name;
@@ -151,6 +152,8 @@ popupOpenButton.addEventListener('click', () => {
     popupProfile.open();
     formValidatorProfile.reset();
 });
+
+export const popupDelete = new PopupDeleteCard('.popup_type_delete-image')
 
 popupOpenMestoButton.addEventListener('click', () => {
     popupMesto.open();
@@ -160,6 +163,7 @@ popupOpenMestoButton.addEventListener('click', () => {
 //-----------------------Валидация-----------------------------------
 export const popupContainer = popupProfile.popup.querySelector('.popup__form');
 export const popupContainerElem = popupMesto.popup.querySelector('.popup__form');
+export const popupContainerAvatar = popupUpdateAvatar.popup.querySelector('.popup__form');
 
 export const formValidatorProfile = new FormValidator(initialValid, popupContainer);
 formValidatorProfile.enableValidation();
@@ -167,14 +171,17 @@ formValidatorProfile.enableValidation();
 export const addCardFormValidator = new FormValidator(initialValid, popupContainerElem);
 addCardFormValidator.enableValidation();
 
+export const updateAvatarValidator = new FormValidator(initialValid, popupContainerAvatar);
+updateAvatarValidator.enableValidation();
+
 function createCard(item, selector) {
-    const card = new Card(item, selector, ({link, name}) => {
-        popupMestoImage.open({link, name});
+    const card = new Card(item, selector, ({link, name, likes}) => {
+        popupMestoImage.open({link, name, likes});
+
     });
     const cardElement = card.generateCard();
     return cardElement;
 }
-
 
 
 
