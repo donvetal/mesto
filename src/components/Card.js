@@ -20,10 +20,26 @@ class Card {
         const cardElement = document.querySelector(this._cardSelector).content.querySelector('.card').cloneNode(true);
         return cardElement;
     };
+
+    checkState(userInfo) {
+        if (userInfo.id != this.data.owner._id) {
+            this._cardTrash.remove();
+        }
+        this.data.likes.forEach(item => {
+            if (item._id === userInfo.id) {
+                this._cardLikes.classList.add('card__like_active');
+            }
+        });
+    }
+
     // метод generateCard , вставит данные из массива  initialCards в разметку и подготовит карточку к публикации в DOM.
     generateCard = () => {
         this._element = this._getTemplate();
         this._cardImage = this._element.querySelector('.card__image');
+
+        this._cardTrash = this._element.querySelector('.card__trash');
+        this._cardLikes = this._element.querySelector('.card__like');
+
         //--------добавил
         this._element.querySelector('.card__like-number').textContent = this._imageTotalLikes.length;
         this._setEventListeners();

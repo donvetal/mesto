@@ -35,16 +35,6 @@ const getListItems = () => api.listItems()
                 renderer: (data) => {
                     const cardElement = createCard(data, `${"." + mestoTemplate.classList.value}`);
                     cardsList.addItem(cardElement);
-                    //удалил корзину из чужих карточек
-                    if (userInfo.getUserInfo().id != data.owner._id) {
-                        document.querySelector('.card__trash').remove();
-                    }
-                    data.likes.forEach(item => {
-                        if (item._id === userInfo.getUserInfo().id) {
-                            cardElement.querySelector('.card__like').classList.add('card__like_active');
-                        }
-                    });
-
                 }
             },
             '.elements-cards');
@@ -73,6 +63,7 @@ const popupProfile = new PopupWithForm('.popup_type_profile', (values) => {
                 name: data.name,
                 info: data.about
             });
+            popupProfile.close();
         })
         .finally(() => {
             popupProfile.popup.querySelector('.popup__btn').textContent = 'Сохранить';
@@ -80,37 +71,29 @@ const popupProfile = new PopupWithForm('.popup_type_profile', (values) => {
 });
 const popupMesto = new PopupWithForm('.popup_type_mesto', (values) => {
 
-    function uuidv4() {
-        return 'xxxxxxxx'.replace(/[xy]/g, function (c) {
-            const r = Math.random() * 8 | 0;
-            const v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(8);
-        });
-    }
-
-
     const name = values['mesto-name'];
     const link = values['mesto-image-link'];
-    //----------добавил
-    const likes = [];
     popupMesto.popup.querySelector('.popup__btn').textContent = 'Создаем...';
-    api.addNewCard(
-        {
-            "likes": [],
-            "_id": uuidv4(),
-            "name": name,
-            "link": link,
-            "owner": {
-                ...userInfo.getUserInfo(),
-                "_id": "1",
-                "cohort": "cohort-25"
-            },
-            "createdAt": new Date().toLocaleTimeString()
-        }
-    ).then(_ => {
-        document.querySelector('.elements-cards').innerHTML = "";
-        getListItems();
 
+    const cardData = {
+        "likes": [],
+        "_id": '1',
+        "name": name,
+        "link": link,
+        "owner": {
+            ...userInfo.getUserInfo(),
+            "cohort": "cohort-25"
+        },
+        "createdAt": new Date().toLocaleTimeString()
+    };
+    api.addNewCard(cardData).then(data => {
+        document.querySelector('.elements-cards').innerHTML = "";
+
+        const cardElement = createCard(data, `${"." + mestoTemplate.classList.value}`);
+        cardsList.addItem(cardElement);
+        cardsList.renderItems();
+
+        popupMesto.close();
     })
         .finally(() => {
             popupMesto.popup.querySelector('.popup__btn').textContent = 'Создать';
@@ -124,6 +107,7 @@ const popupUpdateAvatar = new PopupWithForm('.popup_type_update-avatar', values 
         .then(_ => {
             const link = values['avatar-link'];
             document.querySelector('.profile__avatar').src = link;
+            popupUpdateAvatar.close();
         })
         .finally(_ => {
             popupUpdateAvatar.popup.querySelector('.popup__btn').textContent = 'Сохранить';
@@ -168,6 +152,7 @@ function createCard(item, selector) {
 
     });
     const cardElement = card.generateCard();
+    card.checkState(userInfo.getUserInfo());
     return cardElement;
 }
 
