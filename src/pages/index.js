@@ -36,18 +36,14 @@ const getListItems = () => api.listItems()
                     const cardElement = createCard(data, `${"." + mestoTemplate.classList.value}`);
                     cardsList.addItem(cardElement);
                     //удалил корзину из чужих карточек
-                    if(userInfo.getUserInfo().id != data.owner._id) {
+                    if (userInfo.getUserInfo().id != data.owner._id) {
                         document.querySelector('.card__trash').remove();
                     }
-                    // if(data.likes.some(like => userInfo.getUserInfo().id === like._id)) {
-                    //     console.log('Hello')
-                    //     // cardElement._element.querySelector('.card__like').classList.add('card__like_active');
-                    // }
                     data.likes.forEach(item => {
-                        if(item._id === userInfo.getUserInfo().id ) {
+                        if (item._id === userInfo.getUserInfo().id) {
                             cardElement.querySelector('.card__like').classList.add('card__like_active');
                         }
-                    })
+                    });
 
                 }
             },
@@ -70,7 +66,7 @@ api.getUserInfo()
     });
 
 const popupProfile = new PopupWithForm('.popup_type_profile', (values) => {
-    popupProfile.popup.querySelector('.popup__btn').textContent = 'Сохраняем...'
+    popupProfile.popup.querySelector('.popup__btn').textContent = 'Сохраняем...';
     api.updateUserInfo(values['popup-name'], values['popup-job'])
         .then(data => {
             userInfo.setUserInfo({
@@ -79,8 +75,8 @@ const popupProfile = new PopupWithForm('.popup_type_profile', (values) => {
             });
         })
         .finally(() => {
-            popupProfile.popup.querySelector('.popup__btn').textContent = 'Сохранить'
-        })
+            popupProfile.popup.querySelector('.popup__btn').textContent = 'Сохранить';
+        });
 });
 const popupMesto = new PopupWithForm('.popup_type_mesto', (values) => {
 
@@ -97,7 +93,7 @@ const popupMesto = new PopupWithForm('.popup_type_mesto', (values) => {
     const link = values['mesto-image-link'];
     //----------добавил
     const likes = [];
-    popupMesto.popup.querySelector('.popup__btn').textContent = 'Создаем...'
+    popupMesto.popup.querySelector('.popup__btn').textContent = 'Создаем...';
     api.addNewCard(
         {
             "likes": [],
@@ -112,39 +108,31 @@ const popupMesto = new PopupWithForm('.popup_type_mesto', (values) => {
             "createdAt": new Date().toLocaleTimeString()
         }
     ).then(_ => {
-        document.querySelector('.elements-cards').innerHTML = ""
-        getListItems()
-        //добавил
-        // const cardElement = createCard({name, link, likes}, `${"." + mestoTemplate.classList.value}`);
-        // cardsList.addItem(cardElement);
-        // addCardFormValidator.reset();
+        document.querySelector('.elements-cards').innerHTML = "";
+        getListItems();
+
     })
         .finally(() => {
-            popupMesto.popup.querySelector('.popup__btn').textContent = 'Создать'
-        })
+            popupMesto.popup.querySelector('.popup__btn').textContent = 'Создать';
+        });
 
 });
 
 const popupUpdateAvatar = new PopupWithForm('.popup_type_update-avatar', values => {
-    popupUpdateAvatar.popup.querySelector('.popup__btn').textContent = 'Сохранение...'
+    popupUpdateAvatar.popup.querySelector('.popup__btn').textContent = 'Сохранение...';
     api.changeAvatar(values['avatar-link'])
         .then(_ => {
-            const link = values['avatar-link']
+            const link = values['avatar-link'];
             document.querySelector('.profile__avatar').src = link;
         })
         .finally(_ => {
-            popupUpdateAvatar.popup.querySelector('.popup__btn').textContent = 'Сохранить'
-        })
+            popupUpdateAvatar.popup.querySelector('.popup__btn').textContent = 'Сохранить';
+        });
 });
-// const popupDeleteCard = new PopupDeleteCard('.popup_type_delete-image');
-// const deleteButton = document.querySelector('.card__trash');
-// deleteButton.addEventListener('click', () => {
-//     popupDeleteCard.open();
-// })
-document.querySelector('.profile__avatar').addEventListener('click',  () => {
+document.querySelector('.container__avatar').addEventListener('click', () => {
     popupUpdateAvatar.open();
     updateAvatarValidator.reset();
-})
+});
 const popupMestoImage = new PopupWithImage('.popup_type_image');
 popupOpenButton.addEventListener('click', () => {
     popupProfile.popup.querySelector('.popup__input_type_name').value = userInfo.getUserInfo().name;
@@ -153,7 +141,7 @@ popupOpenButton.addEventListener('click', () => {
     formValidatorProfile.reset();
 });
 
-export const popupDelete = new PopupDeleteCard('.popup_type_delete-image')
+export const popupDelete = new PopupDeleteCard('.popup_type_delete-image');
 
 popupOpenMestoButton.addEventListener('click', () => {
     popupMesto.open();

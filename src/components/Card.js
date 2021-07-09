@@ -1,6 +1,4 @@
-import PopupDeleteCard from "./PopupDeleteCard";
 import {api, popupDelete, userInfo} from "../pages";
-import {data} from "autoprefixer";
 
 class Card {
     constructor(data, cardSelector, handleCardClick) {
@@ -45,42 +43,42 @@ class Card {
         this._element.querySelector('.card__trash').addEventListener('click', (e) => {
             popupDelete.open();
             popupDelete.onDelete = (popup) => {
-                popupDelete.popup.querySelector('.popup__btn').textContent = 'Удаляем...'
+                popupDelete.popup.querySelector('.popup__btn').textContent = 'Удаляем...';
                 api.deleteCard(this.data._id).then(_ => {
                     e.target.closest('.card').remove();
-                    popup.close()
+                    popup.close();
                 })
                     .finally(() => {
-                        popupDelete.popup.querySelector('.popup__btn').textContent = 'Да'
-                    })
-            }
+                        popupDelete.popup.querySelector('.popup__btn').textContent = 'Да';
+                    });
+            };
 
         });
         //лайк
         this._element.querySelector('.card__like').addEventListener('click', (evt) => {
-            evt.preventDefault()
+            evt.preventDefault();
 
-            if(!this.data.likes.some(like => like._id === userInfo.getUserInfo().id)) {
-                this.data.likes.push({'_id': userInfo.getUserInfo().id})
+            if (!this.data.likes.some(like => like._id === userInfo.getUserInfo().id)) {
+                this.data.likes.push({'_id': userInfo.getUserInfo().id});
                 evt.target.classList.toggle('card__like_active');
-                this._element.querySelector('.card__like-number').textContent = this.data.likes.length ;
+                this._element.querySelector('.card__like-number').textContent = this.data.likes.length;
                 api.putLike(this.data._id)
                     .catch(_ => {
                         evt.target.classList.toggle('card__like_active');
-                        this.data.likes = this.data.likes.filter(like => like._id != userInfo.getUserInfo().id)
+                        this.data.likes = this.data.likes.filter(like => like._id != userInfo.getUserInfo().id);
                         this._element.querySelector('.card__like-number').textContent = this.data.likes.length;
-                    })
+                    });
 
             } else {
-                this.data.likes = this.data.likes.filter(like => like._id != userInfo.getUserInfo().id)
+                this.data.likes = this.data.likes.filter(like => like._id != userInfo.getUserInfo().id);
                 evt.target.classList.toggle('card__like_active');
                 this._element.querySelector('.card__like-number').textContent = this.data.likes.length;
                 api.deleteLike(this.data._id)
                     .catch(_ => {
                         evt.target.classList.toggle('card__like_active');
-                        this.data.likes.push({'_id': userInfo.getUserInfo().id})
-                        this._element.querySelector('.card__like-number').textContent = this.data.likes.length
-                    })
+                        this.data.likes.push({'_id': userInfo.getUserInfo().id});
+                        this._element.querySelector('.card__like-number').textContent = this.data.likes.length;
+                    });
 
             }
 

@@ -5,6 +5,11 @@
     max-height: 120px;
     object-fit: cover;
     object-position: 50% 50%;
+    transition: opacity 0.5s linear;
+}
+
+.profile__avatar:hover {
+    opacity: 0.2;
 }
 
 @media (min-width: 880px) {

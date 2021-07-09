@@ -11,8 +11,3 @@ export default class PopupDeleteCard extends Popup {
 
 
 }
-// удаления карточки
-// this._element.querySelector('.card__trash').addEventListener('click', (e) => {
-//     e.target.closest('.card').remove();
-//
-// });

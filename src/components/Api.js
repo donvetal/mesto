@@ -4,29 +4,8 @@ export class Api {
         this.headers = config.headers;
     }
 
-    /*
-    https://mesto.nomoreparties.co/v1/cohort-25/users/me
-    fetch('https://mesto.nomoreparties.co/v1/cohortId/users/me', {
-  method: 'PATCH',
-  headers: {
-    authorization: 'c56e30dc-2883-4270-a59e-b2f7bae969c6',
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    name: 'Marie Skłodowska Curie',
-    about: 'Physicist and Chemist'
-  })
-});
-     */
-// 5d1f0611d321eb4bdcd707dd
-    // DELETE https://mesto.nomoreparties.co/v1/cohortId/cards/5d1f0611d321eb4bdcd707dd
-    // DELETE https://mesto.nomoreparties.co/v1/cohortId/cards/likes/cardId
-    // PUT https://mesto.nomoreparties.co/v1/cohortId/cards/likes/cardId
-    //5d1f0611d321eb4bdcd707dd
-    //PATCH https://mesto.nomoreparties.co/v1/cohortId/users/me/avatar
-
     changeAvatar = (link) => this._fetch('PATCH', '/users/me/avatar', {'avatar': link});
-    
+
     deleteLike = (id) => this._fetch('DELETE', '/cards/likes/' + id);
 
     putLike = (id) => this._fetch('PUT', '/cards/likes/' + id);
