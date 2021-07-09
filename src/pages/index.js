@@ -129,7 +129,7 @@ const popupUpdateAvatar = new PopupWithForm('.popup_type_update-avatar', values 
             popupUpdateAvatar.popup.querySelector('.popup__btn').textContent = 'Сохранить';
         });
 });
-document.querySelector('.container__avatar').addEventListener('click', () => {
+document.querySelector('.profile__container').addEventListener('click', () => {
     popupUpdateAvatar.open();
     updateAvatarValidator.reset();
 });
