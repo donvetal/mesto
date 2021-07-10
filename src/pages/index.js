@@ -87,11 +87,9 @@ const popupMesto = new PopupWithForm('.popup_type_mesto', (values) => {
         "createdAt": new Date().toLocaleTimeString()
     };
     api.addNewCard(cardData).then(data => {
-        document.querySelector('.elements-cards').innerHTML = "";
 
         const cardElement = createCard(data, `${"." + mestoTemplate.classList.value}`);
         cardsList.addItem(cardElement);
-        cardsList.renderItems();
 
         popupMesto.close();
     })
